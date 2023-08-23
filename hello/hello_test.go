@@ -7,13 +7,15 @@ import (
 	"github.com/wolves/hello"
 )
 
-func TestPrintTo_PrintsHelloMessageToGivenWriter(t *testing.T) {
+func TestPrint_PrintsHelloMessageToOutput(t *testing.T) {
 	t.Parallel()
 	buf := new(bytes.Buffer)
-	hello.PrintTo(buf)
+	p := hello.NewPrinter()
+	p.Output = buf
+	p.Print()
 	want := "Hello, world\n"
 	got := buf.String()
-	if got != want {
-		t.Errorf("want %q, got %q", want, got)
+	if want != got {
+		t.Errorf("want %q, but got %q", want, got)
 	}
 }
