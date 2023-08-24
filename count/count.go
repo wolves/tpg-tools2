@@ -82,7 +82,16 @@ func (c *counter) Lines() int {
 }
 
 func (c *counter) Words() int {
-	return 0
+	words := 0
+	input := bufio.NewScanner(c.input)
+	input.Split(bufio.ScanWords)
+	for input.Scan() {
+		words++
+	}
+	for _, f := range c.files {
+		f.(io.Closer).Close()
+	}
+	return words
 }
 
 func MainLines() int {
@@ -94,5 +103,16 @@ func MainLines() int {
 		return 1
 	}
 	fmt.Println(c.Lines())
+	return 0
+}
+func MainWords() int {
+	c, err := NewCounter(
+		WithInputFromArgs(os.Args[1:]),
+	)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return 1
+	}
+	fmt.Println(c.Words())
 	return 0
 }
