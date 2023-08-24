@@ -9,6 +9,7 @@ import (
 )
 
 type counter struct {
+	files  []io.Reader
 	input  io.Reader
 	output io.Writer
 }
@@ -40,11 +41,15 @@ func WithInputFromArgs(args []string) option {
 		if len(args) < 1 {
 			return nil
 		}
-		f, err := os.Open(args[0])
-		if err != nil {
-			return err
+		c.files = make([]io.Reader, len(args))
+		for i, path := range args {
+			f, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			c.files[i] = f
 		}
-		c.input = f
+		c.input = io.MultiReader(c.files...)
 		return nil
 	}
 }
