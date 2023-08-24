@@ -2,10 +2,25 @@ package count_test
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
+	"github.com/rogpeppe/go-internal/testscript"
 	"github.com/wolves/count"
 )
+
+func TestMain(m *testing.M) {
+	os.Exit(testscript.RunMain(m, map[string]func() int{
+		"count": count.Main,
+	}))
+}
+
+func Test(t *testing.T) {
+	t.Parallel()
+	testscript.Run(t, testscript.Params{
+		Dir: "testdata/script",
+	})
+}
 
 func TestLines_CountsLinesInInput(t *testing.T) {
 	t.Parallel()
