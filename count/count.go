@@ -75,10 +75,17 @@ func (c *counter) Lines() int {
 	for input.Scan() {
 		lines++
 	}
+	for _, f := range c.files {
+		f.(io.Closer).Close()
+	}
 	return lines
 }
 
-func Main() int {
+func (c *counter) Words() int {
+	return 0
+}
+
+func MainLines() int {
 	c, err := NewCounter(
 		WithInputFromArgs(os.Args[1:]),
 	)

@@ -11,7 +11,7 @@ import (
 
 func TestMain(m *testing.M) {
 	os.Exit(testscript.RunMain(m, map[string]func() int{
-		"count": count.Main,
+		"count": count.MainLines,
 	}))
 }
 
