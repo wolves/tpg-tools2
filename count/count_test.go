@@ -23,3 +23,9 @@ func TestLines_CountsLinesInInput(t *testing.T) {
 		t.Errorf("want %q, got %q", want, got)
 	}
 }
+
+func TestWithInputFromArgs_SetsInputToGivenPath(t *testing.T) {
+	c, err := count.NewCounter(
+		count.WithInputFromArgs(args),
+	)
+}
