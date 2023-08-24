@@ -8,11 +8,15 @@ import (
 )
 
 func TestLines_CountsLinesInInput(t *testing.T) {
-	lines := "Line 1\nLine 2\nLine 3"
-
 	t.Parallel()
-	c := count.NewCounter()
-	c.Input = bytes.NewBufferString(lines)
+	lines := "Line 1\nLine 2\nLine 3"
+	inBuf := bytes.NewBufferString(lines)
+	c, err := count.NewCounter(
+		count.WithInput(inBuf),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
 	want := 3
 	got := c.Lines()
 	if want != got {
