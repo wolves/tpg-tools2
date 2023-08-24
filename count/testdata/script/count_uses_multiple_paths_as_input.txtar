@@ -4,5 +4,5 @@ stdout '^3\n'
 -- input1.txt --
 this input
 contains two lines
---input2.txt --
+-- input2.txt --
 and this just one
