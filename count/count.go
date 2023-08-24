@@ -37,6 +37,9 @@ func WithOutput(output io.Writer) option {
 
 func WithInputFromArgs(args []string) option {
 	return func(c *counter) error {
+		if len(args) < 1 {
+			return nil
+		}
 		f, err := os.Open(args[0])
 		if err != nil {
 			return err

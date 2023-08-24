@@ -39,3 +39,19 @@ func TestWithInputFromArgs_SetsInputToGivenPath(t *testing.T) {
 		t.Errorf("want %d, got %d", want, got)
 	}
 }
+
+func TestWithInputFromArgs_UsesDefaultInputWithNoArgs(t *testing.T) {
+	t.Parallel()
+	c, err := count.NewCounter(
+		count.WithInput(bytes.NewBufferString("Line 1\nLine 2\nLine 3")),
+		count.WithInputFromArgs([]string{}),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := 3
+	got := c.Lines()
+	if want != got {
+		t.Errorf("want %d, got %d", want, got)
+	}
+}
