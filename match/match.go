@@ -35,6 +35,15 @@ func WithOutput(output io.Writer) option {
 		return nil
 	}
 }
+func WithArgsSearchText(args []string) option {
+	return func(m *matcher) error {
+		if len(args) < 1 {
+			return nil
+		}
+		m.text = args[0]
+		return nil
+	}
+}
 
 func NewMatcher(opts ...option) (*matcher, error) {
 	m := &matcher{
@@ -51,12 +60,24 @@ func NewMatcher(opts ...option) (*matcher, error) {
 	return m, nil
 }
 
-func (m *matcher) MatchingLines(s string) {
+func (m *matcher) MatchingLines() {
 	lines := bufio.NewScanner(m.input)
 	for lines.Scan() {
 		//Check Matches
-		if strings.Contains(lines.Text(), s) {
+		if strings.Contains(lines.Text(), m.text) {
 			fmt.Fprintln(m.output, lines.Text())
 		}
 	}
+}
+
+func Main() int {
+	m, err := NewMatcher(
+		WithArgsSearchText(os.Args[1:]),
+	)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return 1
+	}
+	m.MatchingLines()
+	return 0
 }
