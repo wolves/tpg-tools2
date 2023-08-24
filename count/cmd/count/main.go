@@ -1,9 +1,11 @@
 package main
 
 import (
+	"os"
+
 	"github.com/wolves/count"
 )
 
 func main() {
-	count.Main()
+	os.Exit(count.Main())
 }
