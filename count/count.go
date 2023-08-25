@@ -95,11 +95,25 @@ func (c *counter) Words() int {
 	return words
 }
 
+func (c *counter) Bytes() int {
+	bytes := 0
+	input := bufio.NewScanner(c.input)
+	input.Split(bufio.ScanBytes)
+	for input.Scan() {
+		bytes++
+	}
+	for _, f := range c.files {
+		f.(io.Closer).Close()
+	}
+	return bytes
+}
+
 func Main() int {
 	lineMode := flag.Bool("lines", false, "Count lines, not words")
+	bytesMode := flag.Bool("bytes", false, "Count bytes, not words")
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [-lines] [files...]\n", os.Args[0])
-		fmt.Println("Counts words (or lines) from stdin (or files).")
+		fmt.Println("Counts words, lines, or bytes from stdin (or files).")
 		fmt.Println("Flags:")
 		flag.PrintDefaults()
 	}
@@ -111,8 +125,14 @@ func Main() int {
 		fmt.Fprintln(os.Stderr, err)
 		return 1
 	}
+	if *lineMode && *bytesMode {
+		fmt.Fprintln(os.Stderr, "Incompatible count flags")
+		return 1
+	}
 	if *lineMode {
 		fmt.Println(c.Lines())
+	} else if *bytesMode {
+		fmt.Println(c.Bytes())
 	} else {
 		fmt.Println(c.Words())
 	}

@@ -1,0 +1,6 @@
+exec count -bytes input.txt
+stdout '^15$'
+
+-- input.txt --
+counting
+bytes

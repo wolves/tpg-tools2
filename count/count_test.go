@@ -57,6 +57,22 @@ func TestWords_CountsWordsInInput(t *testing.T) {
 	}
 }
 
+func TestBytes_CountsBytesInInput(t *testing.T) {
+	t.Parallel()
+	inBuf := bytes.NewBufferString("1\n2 words\n3 this time")
+	c, err := count.NewCounter(
+		count.WithInput(inBuf),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := 21
+	got := c.Bytes()
+	if want != got {
+		t.Errorf("want %d, got %d", want, got)
+	}
+}
+
 func TestWithInputFromArgs_SetsInputToGivenPath(t *testing.T) {
 	t.Parallel()
 	args := []string{"testdata/three_lines.txt"}

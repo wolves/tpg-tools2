@@ -1,0 +1,2 @@
+! exec count -lines -bytes
+stderr 'Incompatible'
