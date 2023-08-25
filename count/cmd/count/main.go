@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	os.Exit(count.MainLines())
+	os.Exit(count.Main())
 }
