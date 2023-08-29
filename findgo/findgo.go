@@ -6,14 +6,13 @@ import (
 	"path/filepath"
 )
 
-func Files(p string) []string {
-	files := []string{}
-	fsys := os.DirFS(p)
+func Files(path string) (paths []string) {
+	fsys := os.DirFS(path)
 	fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
 		if filepath.Ext(p) == ".go" {
-			files = append(files, p)
+			paths = append(paths, p)
 		}
 		return nil
 	})
-	return files
+	return paths
 }
