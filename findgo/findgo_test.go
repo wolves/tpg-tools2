@@ -1,6 +1,7 @@
 package findgo_test
 
 import (
+	"archive/zip"
 	"os"
 	"testing"
 	"testing/fstest"
@@ -52,6 +53,24 @@ func TestFilesCorrectlyListsFilesInMapFS(t *testing.T) {
 		"subfolder/subfolder.go": {},
 		"subfolder2/another.go":  {},
 		"subfolder2/file.go":     {},
+	}
+	want := []string{
+		"file.go",
+		"subfolder/subfolder.go",
+		"subfolder2/another.go",
+		"subfolder2/file.go",
+	}
+	got := findgo.Files(fsys)
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+}
+
+func TestFilesCorrectlyListsFilesInZIPArchive(t *testing.T) {
+	t.Parallel()
+	fsys, err := zip.OpenReader("testdata/files.zip")
+	if err != nil {
+		t.Fatal(err)
 	}
 	want := []string{
 		"file.go",
